@@ -1,44 +1,49 @@
 module.exports = function (sequelize, DataTypes) {
     return sequelize.define("gas_price", {
-        id:         {
+        id:             {
             autoIncrement: true,
             type:          DataTypes.BIGINT.UNSIGNED,
             allowNull:     false,
             primaryKey:    true,
         },
-        chain:      {
+        chain:          {
             type:      DataTypes.STRING(32),
             allowNull: false,
         },
-        fastest:    {
+        fastest:        {
             type:         DataTypes.DECIMAL(65, 30),
             allowNull:    false,
             defaultValue: 0,
         },
-        fast:       {
+        fast:           {
             type:         DataTypes.DECIMAL(65, 30),
             allowNull:    false,
             defaultValue: 0,
         },
-        source:     {
+        maxPriorityFee: {
+            type:      DataTypes.DECIMAL(65, 30),
+            allowNull: true,
+            field:     "max_priority_fee",
+        },
+        source:         {
             type:      DataTypes.STRING(128),
             allowNull: false,
         },
-        status:     {
+        status:         {
             type:      DataTypes.TINYINT.UNSIGNED,
             allowNull: true,
         },
-        createTime: {
+        createTime:     {
             type:      DataTypes.DATE(3),
             allowNull: true,
             field:     "create_time",
         },
-        updateTime: {
+        updateTime:     {
             type:      DataTypes.DATE(3),
             allowNull: true,
             field:     "update_time",
         },
-        comment:    {
+        comment:        {
             type:      DataTypes.STRING(512),
             allowNull: true,
         },

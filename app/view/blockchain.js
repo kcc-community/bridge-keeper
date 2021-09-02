@@ -17,16 +17,17 @@ class BlockApiView {
      *
      * @param request
      * @param row
-     * @returns {{chain, fast: string, fastest: string, updateTime: *, source: *, status}}
+     * @returns {{chain, fast: string, fastest: string, maxPriorityFee: string, updateTime: string, source, status}}
      */
     static queryGasPrice(request, row) {
         return {
-            chain:      row.chain,
-            fastest:    Decimal.fromString(row.fastest).toString(10),
-            fast:       Decimal.fromString(row.fast).toString(10),
-            source:     row.source,
-            status:     row.status,
-            updateTime: Datetime.fromString1(row.updateTime).mysql,
+            chain:          row.chain,
+            fastest:        Decimal.fromString(row.fastest).toString(10),
+            fast:           Decimal.fromString(row.fast).toString(10),
+            maxPriorityFee: Decimal.fromString(row.maxPriorityFee).toString(10),
+            source:         row.source,
+            status:         row.status,
+            updateTime:     Datetime.fromString1(row.updateTime).mysql,
         };
     }
 
