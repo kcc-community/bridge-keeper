@@ -8,8 +8,9 @@
 
 const {integration: __integration__} = require("../config/config");
 const assert                         = require("assert");
-const Ethers                         = require("ethers");
 const logger                         = require("node-common-sdk").logger();
+const {lodash}                       = require("node-common-sdk").helper;
+const {Decimal}                      = require("node-common-sdk").util;
 const {JobBase}                      = require("node-common-sdk/lib/scheduler");
 const {HttpConnection}               = require("node-common-sdk/lib/connection/http");
 const {GasPriceDaoView}              = require("../dao");
@@ -69,8 +70,8 @@ class ETHGasStationSynchronizerJob extends SynchronizerJob {
 
         return {
             "chain":   this.chain,
-            "fastest": Ethers.BigNumber.from(result.fastest).div(10).toString(),
-            "fast":    Ethers.BigNumber.from(result.fast).div(10).toString(),
+            "fastest": new Decimal.BigNumber(result.fastest).div(10).toString(),
+            "fast":    new Decimal.BigNumber(result.fast).div(10).toString(),
             "source":  this.source,
         };
     }
@@ -93,16 +94,74 @@ class ETHGasNowSynchronizerJob extends SynchronizerJob {
 
         return {
             "chain":   this.chain,
-            "fastest": Ethers.BigNumber.from(result.data.rapid).div("1000000000").toString(),
-            "fast":    Ethers.BigNumber.from(result.data.fast).div("1000000000").toString(),
+            "fastest": new Decimal.BigNumber(result.data.rapid).div("1000000000").toString(),
+            "fast":    new Decimal.BigNumber(result.data.fast).div("1000000000").toString(),
             "source":  this.source,
         };
     }
 
 }
 
+class ETHBlockNativeSynchronizerJob extends SynchronizerJob {
+    constructor(parameter) {
+        super(parameter);
+
+        this.chain  = "eth";
+        this.source = "blocknative";
+        this.url    = __integration__.ethBlockNative;
+    }
+
+    async getGasPrice() {
+        const result = await HttpConnection.get(this.parameter, this.url);
+        assert(result.system === "ethereum" && result.network === "main" && result.unit === "gwei", "invalid response data");
+        const data = lodash.first(lodash.first(result.blockPrices).estimatedPrices);
+
+        return {
+            "chain":          this.chain,
+            "fastest":        new Decimal.BigNumber(data.maxFeePerGas).toString(),
+            "fast":           new Decimal.BigNumber(data.price).toString(),
+            "maxPriorityFee": new Decimal.BigNumber(data.maxPriorityFeePerGas).toString(),
+            "source":         this.source,
+        };
+    }
+
+}
+
+
+class ETHGasPriceSynchronizerJob extends SynchronizerJob {
+    constructor(parameter) {
+        super(parameter);
+
+        this.gasNow      = new ETHGasNowSynchronizerJob(parameter);
+        this.blockNative = new ETHBlockNativeSynchronizerJob(parameter);
+    }
+
+    async getGasPrice() {
+        const base = await this.gasNow.getGasPrice();
+        try {
+            const extend = await this.blockNative.getGasPrice();
+
+            // S1.maxPriorityFee∈(1, base.fastest)
+            if (new Decimal.BigNumber(extend.maxPriorityFee).gt(1) && new Decimal.BigNumber(extend.maxPriorityFee).lt(base.fastest)) {
+                base.maxPriorityFee = extend.maxPriorityFee;
+            }
+
+            // S2.extend.fastest∈(base.fastest, 2base.fastest)
+            if (new Decimal.BigNumber(extend.fastest).gt(base.fastest) && new Decimal.BigNumber(extend.maxPriorityFee).div(2).lt(base.fastest)) {
+                base.fastest = extend.fastest;
+            }
+        } catch (e) {
+            logger.stack(e);
+        }
+
+        return base;
+    }
+}
+
 
 module.exports = {
     ETHGasStationSynchronizerJob,
     ETHGasNowSynchronizerJob,
+    ETHBlockNativeSynchronizerJob,
+    ETHGasPriceSynchronizerJob,
 };
