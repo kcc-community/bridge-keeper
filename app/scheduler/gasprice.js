@@ -44,12 +44,16 @@ class SynchronizerJob extends JobBase {
         if (!created) {
             row.fastest = data.fastest;
             row.fast    = data.fast;
+            if (data.maxPriorityFee) {
+                row.maxPriorityFee = data.maxPriorityFee;
+            }
+
             await row.save();
         }
 
         logger.info({
             ...this.context,
-            message: `chain=${this.chain}||source=${this.source}||fastest=${data.fastest}||fast=${data.fast}`,
+            message: `chain=${this.chain}||source=${this.source}||fastest=${data.fastest}||fast=${data.fast}||maxPriorityFee=${data.maxPriorityFee}`,
         });
     }
 
@@ -132,6 +136,8 @@ class ETHGasPriceSynchronizerJob extends SynchronizerJob {
     constructor(parameter) {
         super(parameter);
 
+        this.chain       = "eth";
+        this.source      = "gasnow";
         this.gasNow      = new ETHGasNowSynchronizerJob(parameter);
         this.blockNative = new ETHBlockNativeSynchronizerJob(parameter);
     }
@@ -160,8 +166,5 @@ class ETHGasPriceSynchronizerJob extends SynchronizerJob {
 
 
 module.exports = {
-    ETHGasStationSynchronizerJob,
-    ETHGasNowSynchronizerJob,
-    ETHBlockNativeSynchronizerJob,
     ETHGasPriceSynchronizerJob,
 };
