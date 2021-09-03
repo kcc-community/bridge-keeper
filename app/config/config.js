@@ -14,10 +14,11 @@ const config = {
         testnet: process.env.TESTNET === "true",
     },
     integration: {
-        ethGasStation: process.env.ETH_GAS_STATION,
-        ethGasNow:     process.env.ETH_GAS_NOW,
-        ethFullnode:   process.env.ETH_FULLNODE,
-        kccFullnode:   process.env.KCC_FULLNODE,
+        ethGasStation:  process.env.ETH_GAS_STATION,
+        ethGasNow:      process.env.ETH_GAS_NOW,
+        ethBlockNative: process.env.ETH_BLOCK_NATIVE,
+        ethFullnode:    process.env.ETH_FULLNODE,
+        kccFullnode:    process.env.KCC_FULLNODE,
     },
     gateway:     {
         name:       "gateway",
