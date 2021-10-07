@@ -13,7 +13,7 @@ const {
 const logger                             = require("node-common-sdk").logger();
 const {Datetime}                         = require("node-common-sdk").util;
 const {JobBase}                          = require("node-common-sdk/lib/scheduler");
-const {Contract}                         = require("kcc-bridge-sdk").contract;
+const {Contract}                         = require("kcc-bridge-sdk-bsc").contract;
 const {
           EventDaoView,
           RecordDaoView,
