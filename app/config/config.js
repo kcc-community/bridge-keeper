@@ -19,6 +19,7 @@ const config = {
         ethBlockNative: process.env.ETH_BLOCK_NATIVE,
         ethFullnode:    process.env.ETH_FULLNODE,
         kccFullnode:    process.env.KCC_FULLNODE,
+        bscFullnode:    process.env.BSC_FULLNODE,
     },
     gateway:     {
         name:       "gateway",
@@ -36,6 +37,12 @@ const config = {
         eth_core_event_synchronizer: {
             name:     "cronjob-eth-core-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/eth-core-event"),
+            logLevel: "info",
+            schedule: "*/60 * * * * *",
+        },
+        bsc_core_event_synchronizer: {
+            name:     "cronjob-bsc-core-event",
+            logDir:   path.join(__dirname, "../../logs/cronjob/bsc-core-event"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
         },
