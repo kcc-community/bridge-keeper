@@ -59,7 +59,9 @@ class SynchronizerJob extends JobBase {
 
 }
 
-
+/**
+ * 2,000 - API Credits Remaining for free
+ */
 class ETHGasStationSynchronizerJob extends SynchronizerJob {
     constructor(parameter) {
         super(parameter);
@@ -106,6 +108,7 @@ class ETHGasNowSynchronizerJob extends SynchronizerJob {
 
 }
 
+
 class ETHBlockNativeSynchronizerJob extends SynchronizerJob {
     constructor(parameter) {
         super(parameter);
@@ -137,30 +140,29 @@ class ETHGasPriceSynchronizerJob extends SynchronizerJob {
         super(parameter);
 
         this.chain       = "eth";
-        this.source      = "gasnow";
-        this.gasNow      = new ETHGasNowSynchronizerJob(parameter);
+        this.source      = "blocknative";
         this.blockNative = new ETHBlockNativeSynchronizerJob(parameter);
     }
 
     async getGasPrice() {
-        const base = await this.gasNow.getGasPrice();
-        try {
-            const extend = await this.blockNative.getGasPrice();
+        // const base = await this.gasStation.getGasPrice();
+        // try {
+        //     const extend = await this.blockNative.getGasPrice();
+        //
+        //     // S1.maxPriorityFee∈(1, base.fastest)
+        //     if (new Decimal.BigNumber(extend.maxPriorityFee).gt(1) && new Decimal.BigNumber(extend.maxPriorityFee).lt(base.fastest)) {
+        //         base.maxPriorityFee = extend.maxPriorityFee;
+        //     }
+        //
+        //     // S2.extend.fastest∈(base.fastest, 2base.fastest)
+        //     if (new Decimal.BigNumber(extend.fastest).gt(base.fastest) && new Decimal.BigNumber(extend.maxPriorityFee).div(2).lt(base.fastest)) {
+        //         base.fastest = extend.fastest;
+        //     }
+        // } catch (e) {
+        //     logger.stack(e);
+        // }
 
-            // S1.maxPriorityFee∈(1, base.fastest)
-            if (new Decimal.BigNumber(extend.maxPriorityFee).gt(1) && new Decimal.BigNumber(extend.maxPriorityFee).lt(base.fastest)) {
-                base.maxPriorityFee = extend.maxPriorityFee;
-            }
-
-            // S2.extend.fastest∈(base.fastest, 2base.fastest)
-            if (new Decimal.BigNumber(extend.fastest).gt(base.fastest) && new Decimal.BigNumber(extend.maxPriorityFee).div(2).lt(base.fastest)) {
-                base.fastest = extend.fastest;
-            }
-        } catch (e) {
-            logger.stack(e);
-        }
-
-        return base;
+        return await this.blockNative.getGasPrice();
     }
 }
 
