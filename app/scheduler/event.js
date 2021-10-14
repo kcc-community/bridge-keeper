@@ -13,7 +13,7 @@ const {
 const logger                             = require("node-common-sdk").logger();
 const {Datetime}                         = require("node-common-sdk").util;
 const {JobBase}                          = require("node-common-sdk/lib/scheduler");
-const {Contract}                         = require("kcc-bridge-sdk").contract;
+const {Contract}                         = require("kcc-bridge-sdk-bsc").contract;
 const {
           EventDaoView,
           RecordDaoView,
@@ -25,6 +25,7 @@ class SynchronizerJob extends JobBase {
     static SECONDS = 5 * 60;
     static ETH     = "eth";
     static KCC     = "kcc";
+    static BSC     = "bsc";
 
     constructor(parameter) {
         super(parameter);
@@ -109,6 +110,21 @@ class ETHBridgeCoreSynchronizerJob extends SynchronizerJob {
 
 }
 
+class BSCBridgeCoreSynchronizerJob extends SynchronizerJob {
+    constructor(parameter) {
+        super(parameter);
+
+        this.handler       = Contract.getBridgeCore(SynchronizerJob.BSC,
+            {
+                testnet:  __blockchain__.testnet,
+                fullnode: __integration__.bscFullnode,
+            });
+        this.confirmations = this.handler.props.confirmations;
+        this.type          = "bridge-core";
+    }
+
+}
+
 
 class KCCBridgeCoreSynchronizerJob extends SynchronizerJob {
     constructor(parameter) {
@@ -142,6 +158,7 @@ class KCCBridgePairSynchronizerJob extends SynchronizerJob {
 
 
 module.exports = {
+    BSCBridgeCoreSynchronizerJob,
     ETHBridgeCoreSynchronizerJob,
     KCCBridgeCoreSynchronizerJob,
     KCCBridgePairSynchronizerJob,
