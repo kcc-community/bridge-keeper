@@ -14,12 +14,13 @@ const config = {
         testnet: process.env.TESTNET === "true",
     },
     integration: {
-        ethGasStation:  process.env.ETH_GAS_STATION,
-        ethGasNow:      process.env.ETH_GAS_NOW,
-        ethBlockNative: process.env.ETH_BLOCK_NATIVE,
-        ethFullnode:    process.env.ETH_FULLNODE,
-        kccFullnode:    process.env.KCC_FULLNODE,
-        bscFullnode:    process.env.BSC_FULLNODE,
+        ethGasStation:   process.env.ETH_GAS_STATION,
+        ethGasNow:       process.env.ETH_GAS_NOW,
+        ethBlockNative:  process.env.ETH_BLOCK_NATIVE,
+        ethFullnode:     process.env.ETH_FULLNODE,
+        kccFullnode:     process.env.KCC_FULLNODE,
+        bscFullnode:     process.env.BSC_FULLNODE,
+        polygonFullnode: process.env.POLYGON_FULLNODE,
     },
     gateway:     {
         name:       "gateway",
@@ -45,6 +46,12 @@ const config = {
             logDir:   path.join(__dirname, "../../logs/cronjob/bsc-core-event"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
+        },
+        polygon_core_event_synchronizer: {
+            name:     "cronjob-polygon-core-event",
+            logDir:   path.join(__dirname, "../../logs/cronjob/polygon-core-event"),
+            logLevel: "info",
+            schedule: "*/50 * * * * *",
         },
         eth_gasprice_synchronizer:   {
             name:     "cronjob-eth-gasprice",
@@ -79,7 +86,7 @@ const config = {
             timezone:  "+00:00",
             benchmark: true,
         },
-        echo:    true,
+        echo:    false,
     },
 };
 

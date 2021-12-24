@@ -26,6 +26,7 @@ class SynchronizerJob extends JobBase {
     static ETH     = "eth";
     static KCC     = "kcc";
     static BSC     = "bsc";
+    static POLYGON = "polygon";
 
     constructor(parameter) {
         super(parameter);
@@ -125,6 +126,21 @@ class BSCBridgeCoreSynchronizerJob extends SynchronizerJob {
 
 }
 
+class PolygonBridgeCoreSynchronizerJob extends SynchronizerJob {
+    constructor(parameter) {
+        super(parameter);
+
+        this.handler       = Contract.getBridgeCore(SynchronizerJob.POLYGON,
+            {
+                testnet:  __blockchain__.testnet,
+                fullnode: __integration__.polygonFullnode,
+            });
+        this.confirmations = this.handler.props.confirmations;
+        this.type          = "bridge-core";
+    }
+
+}
+
 
 class KCCBridgeCoreSynchronizerJob extends SynchronizerJob {
     constructor(parameter) {
@@ -162,4 +178,5 @@ module.exports = {
     ETHBridgeCoreSynchronizerJob,
     KCCBridgeCoreSynchronizerJob,
     KCCBridgePairSynchronizerJob,
+    PolygonBridgeCoreSynchronizerJob,
 };
