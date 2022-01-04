@@ -14,13 +14,14 @@ const config = {
         testnet: process.env.TESTNET === "true",
     },
     integration: {
-        ethGasStation:   process.env.ETH_GAS_STATION,
-        ethGasNow:       process.env.ETH_GAS_NOW,
-        ethBlockNative:  process.env.ETH_BLOCK_NATIVE,
-        ethFullnode:     process.env.ETH_FULLNODE,
-        kccFullnode:     process.env.KCC_FULLNODE,
-        bscFullnode:     process.env.BSC_FULLNODE,
-        polygonFullnode: process.env.POLYGON_FULLNODE,
+        ethGasStation:     process.env.ETH_GAS_STATION,
+        ethGasNow:         process.env.ETH_GAS_NOW,
+        ethBlockNative:    process.env.ETH_BLOCK_NATIVE,
+        ethFullnode:       process.env.ETH_FULLNODE,
+        kccFullnode:       process.env.KCC_FULLNODE,
+        bscFullnode:       process.env.BSC_FULLNODE,
+        polygonFullnode:   process.env.POLYGON_FULLNODE,
+        avalancheFullnode: process.env.AVALANCHE_FULLNODE,
     },
     gateway:     {
         name:       "gateway",
@@ -35,37 +36,43 @@ const config = {
         },
     },
     cronjob:     {
-        eth_core_event_synchronizer: {
+        eth_core_event_synchronizer:       {
             name:     "cronjob-eth-core-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/eth-core-event"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
         },
-        bsc_core_event_synchronizer: {
+        bsc_core_event_synchronizer:       {
             name:     "cronjob-bsc-core-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/bsc-core-event"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
         },
-        polygon_core_event_synchronizer: {
+        polygon_core_event_synchronizer:   {
             name:     "cronjob-polygon-core-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/polygon-core-event"),
             logLevel: "info",
-            schedule: "*/50 * * * * *",
+            schedule: "*/60 * * * * *",
         },
-        eth_gasprice_synchronizer:   {
+        avalanche_core_event_synchronizer: {
+            name:     "cronjob-avalanche-core-event",
+            logDir:   path.join(__dirname, "../../logs/cronjob/avalanche-core-event"),
+            logLevel: "info",
+            schedule: "*/60 * * * * *",
+        },
+        eth_gasprice_synchronizer:         {
             name:     "cronjob-eth-gasprice",
             logDir:   path.join(__dirname, "../../logs/cronjob/eth-gasprice"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
         },
-        kcc_core_event_synchronizer: {
+        kcc_core_event_synchronizer:       {
             name:     "cronjob-kcc-core-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/kcc-core-event"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
         },
-        kcc_pair_event_synchronizer: {
+        kcc_pair_event_synchronizer:       {
             name:     "cronjob-kcc-pair-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/kcc-pair-event"),
             logLevel: "info",
