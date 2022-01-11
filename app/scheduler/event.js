@@ -22,12 +22,12 @@ const {MonitorBlockNumberBehind5Minutes} = require("../common/monitor");
 
 
 class SynchronizerJob extends JobBase {
-    static SECONDS   = 5 * 60;
-    static ETH       = "eth";
-    static KCC       = "kcc";
-    static BSC       = "bsc";
-    static POLYGON   = "polygon";
-    static AVALANCHE = "avalanche";
+    static SECONDS = 5 * 60;
+    static ETH     = "eth";
+    static KCC     = "kcc";
+    static BSC     = "bsc";
+    static POLYGON = "polygon";
+    static FANTOM  = "fantom";
 
     constructor(parameter) {
         super(parameter);
@@ -157,6 +157,20 @@ class AvalancheBridgeCoreSynchronizerJob extends SynchronizerJob {
 
 }
 
+class FantomBridgeCoreSynchronizerJob extends SynchronizerJob {
+    constructor(parameter) {
+        super(parameter);
+
+        this.handler       = Contract.getBridgeCore(SynchronizerJob.FANTOM,
+            {
+                testnet:  __blockchain__.testnet,
+                fullnode: __integration__.fantomFullnode,
+            });
+        this.confirmations = this.handler.props.confirmations;
+        this.type          = "bridge-core";
+    }
+}
+
 
 class KCCBridgeCoreSynchronizerJob extends SynchronizerJob {
     constructor(parameter) {
@@ -196,4 +210,5 @@ module.exports = {
     KCCBridgePairSynchronizerJob,
     PolygonBridgeCoreSynchronizerJob,
     AvalancheBridgeCoreSynchronizerJob,
+    FantomBridgeCoreSynchronizerJob,
 };

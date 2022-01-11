@@ -22,6 +22,7 @@ const config = {
         bscFullnode:       process.env.BSC_FULLNODE,
         polygonFullnode:   process.env.POLYGON_FULLNODE,
         avalancheFullnode: process.env.AVALANCHE_FULLNODE,
+        fantomFullnode:    process.env.FANTOM_FULLNODE,
     },
     gateway:     {
         name:       "gateway",
@@ -57,6 +58,12 @@ const config = {
         avalanche_core_event_synchronizer: {
             name:     "cronjob-avalanche-core-event",
             logDir:   path.join(__dirname, "../../logs/cronjob/avalanche-core-event"),
+            logLevel: "info",
+            schedule: "*/60 * * * * *",
+        },
+        fantom_core_event_synchronizer:    {
+            name:     "cronjob-fantom-core-event",
+            logDir:   path.join(__dirname, "../../logs/cronjob/fantom-core-event"),
             logLevel: "info",
             schedule: "*/60 * * * * *",
         },
