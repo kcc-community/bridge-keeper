@@ -27,6 +27,7 @@ class SynchronizerJob extends JobBase {
     static KCC     = "kcc";
     static BSC     = "bsc";
     static POLYGON = "polygon";
+    static AVALANCHE = "avalanche";
     static FANTOM  = "fantom";
 
     constructor(parameter) {
