@@ -22,13 +22,13 @@ const {MonitorBlockNumberBehind5Minutes} = require("../common/monitor");
 
 
 class SynchronizerJob extends JobBase {
-    static SECONDS = 5 * 60;
-    static ETH     = "eth";
-    static KCC     = "kcc";
-    static BSC     = "bsc";
-    static POLYGON = "polygon";
+    static SECONDS   = 5 * 60;
+    static ETH       = "eth";
+    static KCC       = "kcc";
+    static BSC       = "bsc";
+    static POLYGON   = "polygon";
     static AVALANCHE = "avalanche";
-    static FANTOM  = "fantom";
+    static FANTOM    = "fantom";
 
     constructor(parameter) {
         super(parameter);
